@@ -22,3 +22,7 @@ These instructions will get you a copy of the project up and running on your loc
 * Install **[virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)** via ```pip install virtualenvwrapper```.
 
 ### Installing
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/AlbertWayne/TooPath/tags). 
