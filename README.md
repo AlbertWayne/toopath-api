@@ -10,7 +10,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 * Install **[python 3.6.1](https://www.python.org/downloads/)**.
 * Install **OSGeo4W** following the steps in **[GeoDjango Tutorial](https://docs.djangoproject.com/en/2.0/ref/contrib/gis/tutorial/)** (make sure to install the same bit version of python and OSGeo4W.
-
+* Install **[PyCharm](https://www.jetbrains.com/pycharm/download/)** (optional).
+ 
 #### Windows
 
 * Install **[virtualenvwrapper-win](https://pypi.python.org/pypi/virtualenvwrapper-win)** via ```easy_install virtualenvwrapper-win```
@@ -20,8 +21,42 @@ These instructions will get you a copy of the project up and running on your loc
 #### Linux
 
 * Install **[virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)** via ```pip install virtualenvwrapper```.
+* Install **[PostgreSQL 9.6](https://www.postgresql.org/download/)**.
+* Install **[PostGIS 2.3](http://postgis.net/install/)**.
 
-### Installing
+### Environment setup
+
+This environment setup can be done via console and also, via PyCharm console (if you have installed this IDE).
+First of all, create a virtual environment:
+
+```
+mkvirtualenv [virtual_environment_name]
+```
+
+If the virtual environment is not automatically activated, then use:
+
+```
+workon [virtual_environment_name]
+```
+
+Install all the python requirements:
+
+```
+pip install -r requirements.txt
+```
+
+As it is recommended on this **[settings tutorial]**, this project has production and local separate settings. To use the local settings setup your **DJANGO_SETTINGS_MODULE** environment variable to ```TooPath3.settings.local```.
+
+For windows users, follow this **[Getting started of Vagrant](https://www.vagrantup.com/intro/getting-started/index.html)** to create a virtual machine with **PostgreSQL** and **PostGIS** (use the versions on [Linux](#Linux) section).
+
+For linux users, you can create the database with the **PostgreSQL** and **PostGIS** previously installed.
+
+#### PyCharm setup
+
+1. Go to  *File>Settings>Project:"name">Project interpreter>Add local*
+2. Select **python.exe** from **[virtual_environment_name]** folder
+3. Mark *Associate this virtual environment with current project*
+4. Configure the settings **INSTALLED_APPS** and **DATABASES** following the steps in **[Configure settings.py](https://docs.djangoproject.com/en/1.11/ref/contrib/gis/tutorial/#configure-settings-py)**
 
 ## Versioning
 
