@@ -1,0 +1,7 @@
+.idea
+__pycache__/
+.vagrant
+Vagrant-setup/
+start.sh
+stop.sh
+Vagrantfile
