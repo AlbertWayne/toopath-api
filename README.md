@@ -1,6 +1,6 @@
 # TooPath v3
 
-TooPath is an API that let you manage tracks and locations related to a device.
+TooPath v3 is an API that let you manage tracks and locations related to a device. This API is protected with [JWT](https://jwt.io/) authentication and follows the [GeoJSON](http://geojson.org/) RFC 7946.
 
 ## Getting Started
 
