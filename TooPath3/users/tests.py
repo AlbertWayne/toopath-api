@@ -1,37 +1,10 @@
 import jwt
-from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
-from rest_framework.test import APITestCase, APIRequestFactory, APIClient
+from rest_framework.test import APITestCase, APIClient
+from rest_framework_jwt.settings import api_settings
 
 from TooPath3.constants import DEFAULT_ERROR_MESSAGES
-from TooPath3.models import CustomUser
 from TooPath3.users.views import *
-
-# DATA CONSTANTS
-from TooPath3.utils import create_user_with_email, generate_token_for_testing
-
-VALID_DATA_USER = {
-    "username": "test",
-    "email": "test@test.com",
-    "password": "password"
-}
-INVALID_DATA_USER = {
-    "username": "test"
-}
-VALID_DATA_LOGIN = {
-    "username": "test",
-    "password": "test"
-}
-INVALID_DATA_LOGIN = {
-    "user": "test",
-    "pssword": "test"
-}
-DATA_LOGIN_NO_PASSWORD = {
-    "username": "test"
-}
-DATA_LOGIN_NO_USERNAME = {
-    "password": "test"
-}
+from TooPath3.utils import create_user_with_email, generate_token_for_testing, get_latest_id_inserted
 
 
 class GetUserCase(APITestCase):
@@ -64,31 +37,31 @@ class GetUserCase(APITestCase):
         self.assertEqual(PublicCustomUserSerializer(instance=self.user).data, response.data)
 
 
-class PostUser(APITestCase):
-    """
-    POST /users
-    """
-
+class PostUserCase(APITestCase):
     def setUp(self):
-        self.factory = APIRequestFactory()
+        self.client = APIClient()
 
-    def test_given_non_existing_users__when_post_users__with_username_email_and_password__then_return_created(self):
-        response = self.client.post('/users/', VALID_DATA_USER, format='json')
+    def test_return_201_status_when_post_user_is_done(self):
+        json_body = {'username': 'test', 'email': 'test@gmail.com', 'password': 'test_password'}
+        response = self.client.post(path='/users/', data=json_body, format='json')
         self.assertEqual(response.status_code, HTTP_201_CREATED)
 
-    def test_given_non_existing_users__when_post_users__with_username_email_and_password__then_user_is_created(self):
-        self.client.post('/users/', VALID_DATA_USER, format='json')
-        user = CustomUser.objects.get(username='test')
-        self.assertEqual(user.email, 'test@test.com')
+    def test_instance_is_created_when_post_user_is_done(self):
+        json_body = {'username': 'test', 'email': 'test@gmail.com', 'password': 'test_password'}
+        self.client.post(path='/users/', data=json_body, format='json')
+        user_created = CustomUser.objects.get(pk=get_latest_id_inserted(model_class=CustomUser))
+        self.assertIsNotNone(user_created)
 
-    def test_given_non_existing_users__when_post_users__with_invalid_username_email_or_password__then_return_bad_request(
-            self):
-        response = self.client.post('/users/', INVALID_DATA_USER, format='json')
+    def test_return_json_response_status_when_post_user_is_done(self):
+        json_body = {'username': 'test', 'email': 'test@gmail.com', 'password': 'test_password'}
+        response = self.client.post(path='/users/', data=json_body, format='json')
+        user_created = CustomUser.objects.get(pk=get_latest_id_inserted(model_class=CustomUser))
+        self.assertEqual(response.data, PublicCustomUserSerializer(instance=user_created).data)
+
+    def test_return_400_status_when_json_body_is_invalid(self):
+        json_body_invalid = {'user_name': 'test', 'email': 'test@gmail.com', 'password': 'test_password'}
+        response = self.client.post(path='/users/', data=json_body_invalid, format='json')
         self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
-
-    def test_given_non_existing_users__when_post_users__with_username_email_and_password__then_return_token(self):
-        response = self.client.post('/users/', VALID_DATA_USER, format='json')
-        self.assertIsNotNone(response.data['token'])
 
 
 class PatchUserCase(APITestCase):
@@ -175,11 +148,7 @@ class PutUserCase(APITestCase):
         self.assertEqual(PublicCustomUserSerializer(instance=user_updated).data, response.data)
 
 
-class LoginTest(APITestCase):
-    """
-    POST /login
-    """
-
+class LoginTestCase(APITestCase):
     class PayloadObject:
         def __init__(self, username, pk):
             self.username = username
@@ -189,35 +158,40 @@ class LoginTest(APITestCase):
         self.client = APIClient()
         self.user = CustomUser.objects.create(username="test", email='test@test.com', password=make_password('test'))
 
-    def test_given_existing_user__when_post_login__with_valid_username_and_password__then_return_ok(self):
-        response = self.client.post('/login/', VALID_DATA_LOGIN, format='json')
+    def test_return_200_status__when_login_is_done(self):
+        json_body = {"username": self.user.username, "password": "test"}
+        response = self.client.post(path='/login/', data=json_body, format='json')
         self.assertEqual(response.status_code, HTTP_200_OK)
 
-    def test_given_existing_user__when_post_login__with_valid_username_and_password__then_return_token(self):
-        response = self.client.post('/login/', VALID_DATA_LOGIN, format='json')
+    def test_check_token_in_response__when_login_is_done(self):
+        json_body = {"username": self.user.username, "password": "test"}
+        response = self.client.post(path='/login/', data=json_body, format='json')
         self.assertIsNotNone(response.data['token'])
 
-    def test_given_existing_user__when_post_login__with_invalid_username_or_password__then_return_bad_request(self):
-        response = self.client.post('/login/', INVALID_DATA_LOGIN, format='json')
+    def test_return_400_status__when_json_body_is_invalid(self):
+        json_body_invalid = {"user": self.user.username, "password": self.user.password}
+        response = self.client.post(path='/login/', data=json_body_invalid, format='json')
         self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
 
-    def test_given_existing_user__when_post_login__with_no_password__then_return_password_needed_error(self):
-        response = self.client.post('/login/', DATA_LOGIN_NO_PASSWORD, format='json')
+    def test_return_password_field_required__when_json_body_have_not_password(self):
+        json_body_no_password = {"username": self.user.username}
+        response = self.client.post(path='/login/', data=json_body_no_password, format='json')
         self.assertEqual(response.data['password'], ['This field is required.'])
 
-    def test_given_existing_user__when_post_login__with_no_username__then_return_username_needed_error(self):
-        response = self.client.post('/login/', DATA_LOGIN_NO_USERNAME, format='json')
+    def test_return_username_field_required__when_json_body_have_not_username(self):
+        json_body_no_username = {"password": self.user.password}
+        response = self.client.post(path='/login/', data=json_body_no_username, format='json')
         self.assertEqual(response.data['username'], ['This field is required.'])
 
-    def test_given_existing_user__when_post_verify_token__with_generated_token__then_return_ok_status(self):
+    def test_generated_token_works_when_login_is_done(self):
         user_jwt_secret = str(self.user.jwt_secret)
         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-        payload_object = LoginTest.PayloadObject(self.user.username, self.user.pk)
+        payload_object = LoginTestCase.PayloadObject(self.user.username, self.user.pk)
         payload = jwt_payload_handler(payload_object)
         token = jwt.encode(
             payload,
             user_jwt_secret,
             api_settings.JWT_ALGORITHM
         ).decode('utf-8')
-        response = self.client.post('/api-token-verify/', {"token": token}, format='json')
+        response = self.client.post(path='/api-token-verify/', data={"token": token}, format='json')
         self.assertEqual(response.status_code, HTTP_200_OK)
