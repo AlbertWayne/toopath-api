@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 * Install **[python 3.6.1](https://www.python.org/downloads/)**.
 * Install **OSGeo4W** following the steps in **[GeoDjango Tutorial](https://docs.djangoproject.com/en/2.0/ref/contrib/gis/tutorial/)** (make sure to install the same bit version of python and OSGeo4W.
-* Install **[PyCharm](https://www.jetbrains.com/pycharm/download/)** (optional).
+* Install **[PyCharm](https://www.jetbrains.com/pycharm/download/)** (optional, recommended for windows users).
  
 #### Windows
 
@@ -51,12 +51,28 @@ For windows users, follow this **[Getting started of Vagrant](https://www.vagran
 
 For linux users, you can create the database with the **PostgreSQL** and **PostGIS** previously installed.
 
+Apply all the migrations with:
+
+```
+python manage.py migrate
+```
+
 #### PyCharm setup
 
 1. Go to  *File>Settings>Project:"name">Project interpreter>Add local*
 2. Select **python.exe** from **[virtual_environment_name]** folder
 3. Mark *Associate this virtual environment with current project*
 4. Configure the settings **INSTALLED_APPS** and **DATABASES** following the steps in **[Configure settings.py](https://docs.djangoproject.com/en/1.11/ref/contrib/gis/tutorial/#configure-settings-py)**
+
+## Running the API
+
+Use ```python manage.py runserver x.x.x.x:aaaa``` where x.x.x.x is the address and aaaa is the port. For local example:
+
+```
+python manage.py runserver 127.0.0.1:8080 
+```
+
+## Running the tests
 
 ## Versioning
 
