@@ -1,6 +1,6 @@
 # TooPath v3
 
-One Paragraph of project description goes here
+TooPath is an API that let you manage tracks and locations related to a device.
 
 ## Getting Started
 
@@ -20,3 +20,5 @@ These instructions will get you a copy of the project up and running on your loc
 #### Linux
 
 * Install **[virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)** via ```pip install virtualenvwrapper```.
+
+### Installing
