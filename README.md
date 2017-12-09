@@ -108,6 +108,10 @@ Youn can also setup the **DJANGO_SETTINGS_MODULE** environment variable to ```To
 * **[Django REST-gis](https://github.com/djangonauts/django-rest-framework-gis)** - Geographic add-ons for Django REST.
 * **[Jenkins](https://jenkins-ci.org/)** - Integration tool
 
+## Authors
+
+* Albert Díaz Benitez - *First stable version* - **[AlbertWayne](https://github.com/AlbertWayne)** - @AlbertWayne
+
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/AlbertWayne/TooPath/tags). 
