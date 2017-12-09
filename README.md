@@ -45,7 +45,7 @@ Install all the python requirements:
 pip install -r requirements.txt
 ```
 
-As it is recommended on this **[settings tutorial]**, this project has production and local separate settings. To use the local settings setup your **DJANGO_SETTINGS_MODULE** environment variable to ```TooPath3.settings.local```.
+As it is recommended on this **[settings tutorial](https://medium.com/@ayarshabeer/django-best-practice-settings-file-for-multiple-environments-6d71c6966ee2)**, this project has production and local separate settings. To use the local settings setup your **DJANGO_SETTINGS_MODULE** environment variable to ```TooPath3.settings.local```.
 
 For windows users, follow this **[Getting started of Vagrant](https://www.vagrantup.com/intro/getting-started/index.html)** to create a virtual machine with **PostgreSQL** and **PostGIS** (use the versions on [Linux](#Linux) section).
 
@@ -73,6 +73,40 @@ python manage.py runserver 127.0.0.1:8080
 ```
 
 ## Running the tests
+
+Once you’ve written tests, run them using the test command of your project’s **manage.py** utility:
+
+```
+python manage.py test
+```
+
+If you wanna run a concrete test you can do it specifying the package. For example, to run the devices test:
+
+```
+python manage.py test TooPath3.devices.tests
+```
+
+## Deployment (production)
+
+To apply the migrations on the production environment use:
+
+```
+python manage.py migrate --settings=TooPath3.settings.production
+```
+
+To start the API on the production enviroment use:
+
+```
+python manage.py runserver x.x.x.x:aaaa --settings=TooPath3.settings.production
+```
+
+Youn can also setup the **DJANGO_SETTINGS_MODULE** environment variable to ```TooPath3.settings.production```.
+
+## Built With
+
+* **[Django REST](http://www.django-rest-framework.org/)** - framework used.
+* **[Django REST-gis](https://github.com/djangonauts/django-rest-framework-gis)** - Geographic add-ons for Django REST.
+* **[Jenkins](https://jenkins-ci.org/)** - Integration tool
 
 ## Versioning
 
