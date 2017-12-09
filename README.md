@@ -110,7 +110,7 @@ Youn can also setup the **DJANGO_SETTINGS_MODULE** environment variable to ```To
 
 ## Authors
 
-* Albert Díaz Benitez - *First stable version* - **[AlbertWayne](https://github.com/AlbertWayne)** - @AlbertWayne
+* Albert Díaz Benitez - *First stable version* - **[AlbertWayne](https://github.com/AlbertWayne)**
 
 ## Versioning
 
@@ -119,3 +119,8 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## Acknowledgments
+
+* [inLab FIB](https://github.com/inLabFIB)
+* [Jaume Figueras](https://github.com/JaumeFigueras) and [José Francisco Crespo](https://github.com/josefran)
