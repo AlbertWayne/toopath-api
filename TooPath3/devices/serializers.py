@@ -15,7 +15,7 @@ class DeviceSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if self.partial is True:
-            if 'pk' in data or 'did' in data:
+            if 'pk' in data or 'did' or 'device_type' or 'device_privacy' or 'trash' in data:
                 raise serializers.ValidationError(DEFAULT_ERROR_MESSAGES['invalid_patch'])
             if bool(data) is False or len(self.initial_data) != len(data):
                 raise serializers.ValidationError(DEFAULT_ERROR_MESSAGES['patch_device_fields_required'])

@@ -121,13 +121,13 @@ class PutDeviceCase(APITestCase):
 
     def test_return_200_status_when_put_device_is_done(self):
         device = create_device_with_owner(owner=self.user)
-        json_body = {"name": "test", "ip_address": "127.0.0.1"}
+        json_body = {"name": "test"}
         response = self.client.put(path='/devices/' + str(device.did) + '/', data=json_body, format='json')
         self.assertEqual(HTTP_200_OK, response.status_code)
 
     def test_return_json_data_when_put_device_is_done(self):
         device = create_device_with_owner(owner=self.user)
-        json_body = {"name": "test", "ip_address": "127.0.0.1"}
+        json_body = {"name": "test"}
         response = self.client.put(path='/devices/' + str(device.did) + '/', data=json_body, format='json')
         device_updated = Device.objects.get(pk=device.did)
         self.assertEqual(DeviceSerializer(device_updated).data, response.data)
