@@ -1,4 +1,4 @@
-# TooPath v3
+# TooPath v3 (Outdated)
 
 [![Code coverage][shield-coverage]](#)
 [![Requirements][shield-requirements]](#)
